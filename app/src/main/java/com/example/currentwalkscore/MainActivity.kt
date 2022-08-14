@@ -1,8 +1,12 @@
 package com.example.currentwalkscore
 
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -40,10 +44,15 @@ class MainActivity : AppCompatActivity() {
             if(isLocationEnabled())
             {
 
+                //final latitude and longitude code here
+
             }
             else
             {
                 //setting open here
+                Toast.makeText(this,"Turn on Location",Toast.LENGTH_SHORT).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
             }
         }
         else
@@ -51,6 +60,14 @@ class MainActivity : AppCompatActivity() {
             //request permission here
             requestPermission()
         }
+    }
+
+    private fun isLocationEnabled(): Boolean
+    {
+        val locationManager:LocationManager=getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
     }
 
     private fun requestPermission() {
