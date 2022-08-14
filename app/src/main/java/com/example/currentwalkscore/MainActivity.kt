@@ -4,10 +4,12 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.w3c.dom.Text
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,7 +49,16 @@ class MainActivity : AppCompatActivity() {
         else
         {
             //request permission here
+            requestPermission()
         }
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this, arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_REQUEST_ACCESS_LOCATION
+        )
     }
 
     companion object{
@@ -64,6 +75,27 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(requestCode== PERMISSION_REQUEST_ACCESS_LOCATION)
+        {
+            if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(applicationContext,"Granted",Toast.LENGTH_SHORT).show()
+                getCurrentLocation()
+            }
+            else
+            {
+                Toast.makeText(applicationContext,"Denied",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
