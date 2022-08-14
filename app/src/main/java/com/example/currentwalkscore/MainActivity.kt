@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var tvLatitude: TextView
     private lateinit var tvLongitude: TextView
+    val apiKey = BuildConfig.API_KEY
 
 
 
