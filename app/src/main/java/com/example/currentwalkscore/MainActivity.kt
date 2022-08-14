@@ -3,6 +3,7 @@ package com.example.currentwalkscore
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -45,6 +46,30 @@ class MainActivity : AppCompatActivity() {
             {
 
                 //final latitude and longitude code here
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermission()
+                    return
+                }
+                fusedLocationProviderClient.lastLocation.addOnCompleteListener(this){ task->
+                    val location:Location?=task.result
+                    if(location==null)
+                    {
+                        Toast.makeText(this,"Null Recieved",Toast.LENGTH_SHORT).show()
+                    }
+                    else
+                    {
+                        Toast.makeText(this,"Get Success",Toast.LENGTH_SHORT).show()
+                        tvLatitude.text=""+location.latitude
+                        tvLongitude.text=""+location.longitude
+                    }
+                }
 
             }
             else
