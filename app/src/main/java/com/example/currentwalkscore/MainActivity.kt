@@ -8,6 +8,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -33,6 +34,13 @@ class MainActivity : AppCompatActivity() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         tvLatitude = findViewById(R.id.tv_latitude)
         tvLongitude = findViewById(R.id.tv_longitude)
+
+
+
+    }
+
+    fun refreshLocation(view: View)
+    {
 
         getCurrentLocation()
     }
@@ -66,8 +74,8 @@ class MainActivity : AppCompatActivity() {
                     else
                     {
                         Toast.makeText(this,"Get Success",Toast.LENGTH_SHORT).show()
-                        tvLatitude.text=""+location.latitude
-                        tvLongitude.text=""+location.longitude
+                        tvLatitude.text="Latitude: "+location.latitude
+                        tvLongitude.text="Longitude: "+location.longitude
                     }
                 }
 

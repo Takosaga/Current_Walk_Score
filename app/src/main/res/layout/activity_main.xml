@@ -37,6 +37,16 @@
 
         </TextView>
 
+        <Button
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="refreshLocation"
+            android:text="Click To Refresh Location"
+            >
+
+        </Button>
+
     </LinearLayout>
 
 
