@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                     val location:Location?=task.result
                     if(location==null)
                     {
-                        Toast.makeText(this,"Null Recieved",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Null Received",Toast.LENGTH_SHORT).show()
                     }
                     else
                     {
