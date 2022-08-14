@@ -12,6 +12,10 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.w3c.dom.Text
@@ -23,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvLatitude: TextView
     private lateinit var tvLongitude: TextView
     val apiKey = BuildConfig.API_KEY
-
+    var url = "https://api.walkscore.com/score?format=json&"
 
 
 
@@ -77,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this,"Get Success",Toast.LENGTH_SHORT).show()
                         tvLatitude.text="Latitude: "+location.latitude
                         tvLongitude.text="Longitude: "+location.longitude
+                        apiCall(location.latitude.toString(), location.longitude.toString())
                     }
                 }
 
@@ -147,6 +152,26 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,"Denied",Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun apiCall(lat: String, lon: String) {
+        val walkScore = findViewById<TextView>(R.id.walkscore)
+
+        //var url = "https://some-random-api.ml/joke"
+        var url = "https://api.walkscore.com/score?format=json&lat="+ lat +"&lon=" + lon + "&transit=1&bike=1&wsapikey="+ apiKey
+        val queue = Volley.newRequestQueue(this)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            Response.Listener { response ->
+                walkScore.text = "Walkscore: %s".format(response.get("walkscore"))
+            },
+            Response.ErrorListener { error ->
+                // TODO: Handle error
+            }
+        )
+        queue.add(jsonObjectRequest)
+
     }
 
 
