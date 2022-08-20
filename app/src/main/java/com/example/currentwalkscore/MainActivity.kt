@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvLongitude: TextView
     val apiKey = BuildConfig.API_KEY
     var url = "https://api.walkscore.com/score?format=json&"
+    var website = "https://www.walkscore.com/how-it-works/"
 
 
 
@@ -42,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         tvLatitude = findViewById(R.id.tv_latitude)
         tvLongitude = findViewById(R.id.tv_longitude)
-        val website = "https://www.walkscore.com/how-it-works/"
         val websiteButton = findViewById<Button>(R.id.walkscore_website)
         websiteButton.setOnClickListener{
             val intent = Intent(this, MainActivity2::class.java)
@@ -175,6 +175,7 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 walkScore.text = "Walkscore: " + response.get("walkscore") + " " + response.get("description")
+                website = response.get("ws_link") as String
 
             },
             Response.ErrorListener { error ->
