@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -18,6 +19,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import org.json.JSONArray
 import org.w3c.dom.Text
 import java.util.jar.Manifest
 
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,6 +42,13 @@ class MainActivity : AppCompatActivity() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         tvLatitude = findViewById(R.id.tv_latitude)
         tvLongitude = findViewById(R.id.tv_longitude)
+        val website = "https://www.walkscore.com/how-it-works/"
+        val websiteButton = findViewById<Button>(R.id.walkscore_website)
+        websiteButton.setOnClickListener{
+            val intent = Intent(this, MainActivity2::class.java)
+            intent.putExtra("Website", website)
+            startActivity(intent)
+        }
 
 
 
@@ -157,17 +167,19 @@ class MainActivity : AppCompatActivity() {
     private fun apiCall(lat: String, lon: String) {
         val walkScore = findViewById<TextView>(R.id.walkscore)
 
-        //var url = "https://some-random-api.ml/joke"
+
         var url = "https://api.walkscore.com/score?format=json&lat="+ lat +"&lon=" + lon + "&transit=1&bike=1&wsapikey="+ apiKey
         val queue = Volley.newRequestQueue(this)
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
-                walkScore.text = "Walkscore: %s".format(response.get("walkscore"))
+                walkScore.text = "Walkscore: " + response.get("walkscore") + " " + response.get("description")
+
             },
             Response.ErrorListener { error ->
                 // TODO: Handle error
+                Toast.makeText(applicationContext,"API call Failed",Toast.LENGTH_SHORT).show()
             }
         )
         queue.add(jsonObjectRequest)
